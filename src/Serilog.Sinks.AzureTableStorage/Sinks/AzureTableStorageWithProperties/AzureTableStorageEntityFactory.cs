@@ -54,12 +54,6 @@ namespace Serilog.Sinks.AzureTableStorage
 
             dynamicProperties.Add("MessageTemplate", new EntityProperty(logEvent.MessageTemplate.Text));
             dynamicProperties.Add("Level", new EntityProperty(logEvent.Level.ToString()));
-            dynamicProperties.Add("RenderedMessage", new EntityProperty(logEvent.RenderMessage(formatProvider)));
-
-            if (logEvent.Exception != null)
-            {
-                dynamicProperties.Add("Exception", new EntityProperty(logEvent.Exception.ToString()));
-            }
 
             List<KeyValuePair<ScalarValue, LogEventPropertyValue>> additionalData = null;
             var count = dynamicProperties.Count;

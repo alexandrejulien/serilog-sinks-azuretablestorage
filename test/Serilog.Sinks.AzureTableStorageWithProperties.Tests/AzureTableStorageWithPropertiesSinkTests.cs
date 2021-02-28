@@ -41,10 +41,7 @@ namespace Serilog.Sinks.AzureTableStorage.Tests
             var result = (await TableQueryTakeDynamicAsync(table, takeCount: 1)).First();
 
             // Check the presence of same properties as in previous version
-            Assert.Equal(messageTemplate, result.Properties["MessageTemplate"].StringValue);
             Assert.Equal("Information", result.Properties["Level"].StringValue);
-            Assert.Equal("System.ArgumentException: Some exception", result.Properties["Exception"].StringValue);
-            Assert.Equal("\"Properties\" should go in their 1234  ", result.Properties["RenderedMessage"].StringValue);
 
             // Check the presence of the new properties.
             Assert.Equal("Properties", result.Properties["Properties"].PropertyAsObject);
@@ -304,7 +301,6 @@ namespace Serilog.Sinks.AzureTableStorage.Tests
             logger.Information("Hello {0}", "world");
             var result = (await TableQueryTakeDynamicAsync(table, takeCount: 1)).First();
 
-            Assert.Equal(expectedResult, result.Properties["RenderedMessage"].StringValue);
         }
 
         [Fact]
@@ -326,7 +322,6 @@ namespace Serilog.Sinks.AzureTableStorage.Tests
             logger.Information("Hello {0} this is {Name} {_1234}", "world", name, 1234);
             var result = (await TableQueryTakeDynamicAsync(table, takeCount: 1)).First();
 
-            Assert.Equal(expectedResult, result.Properties["RenderedMessage"].StringValue);
             Assert.Equal(name, result.Properties["Name"].StringValue);
             Assert.Equal(1234, result.Properties["_1234"].Int32Value);
         }
@@ -522,10 +517,7 @@ namespace Serilog.Sinks.AzureTableStorage.Tests
             var result = (await TableQueryTakeDynamicAsync(table, takeCount: 1)).First();
 
             // Check the presence of same properties as in previous version
-            Assert.Equal(messageTemplate, result.Properties["MessageTemplate"].StringValue);
             Assert.Equal("Information", result.Properties["Level"].StringValue);
-            Assert.Equal("System.ArgumentException: Some exception", result.Properties["Exception"].StringValue);
-            Assert.Equal("\"Properties\" should go in their 1234  ", result.Properties["RenderedMessage"].StringValue);
 
             // Check the presence of the new properties.
             Assert.Equal("Properties", result.Properties["Properties"].PropertyAsObject);
