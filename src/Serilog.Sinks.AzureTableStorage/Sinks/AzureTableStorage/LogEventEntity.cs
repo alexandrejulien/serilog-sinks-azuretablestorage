@@ -14,7 +14,7 @@
 
 using System;
 using System.IO;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.Azure.Cosmos.Table;
 using Serilog.Events;
 using Serilog.Formatting;
 
@@ -48,15 +48,11 @@ namespace Serilog.Sinks.AzureTableStorage
             Timestamp = log.Timestamp.ToUniversalTime();
             PartitionKey = partitionKey;
             RowKey = GetValidRowKey(rowKey);
-            MessageTemplate = log.MessageTemplate.Text;
             Level = log.Level.ToString();
-            Exception = log.Exception?.ToString();
-            RenderedMessage = log.RenderMessage();
 
             //Use the underlying TextFormatter to serialise the entire JSON object for the data column
             var s = new StringWriter();
             textFormatter.Format(log, s);
-            Data = s.ToString();
         }
 
         // http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
@@ -74,17 +70,5 @@ namespace Serilog.Sinks.AzureTableStorage
         /// The level of the log.
         /// </summary>
         public string Level { get; set; }
-        /// <summary>
-        /// A string representation of the exception that was attached to the log (if any).
-        /// </summary>
-        public string Exception { get; set; }
-        /// <summary>
-        /// The rendered log message.
-        /// </summary>
-        public string RenderedMessage { get; set; }
-        /// <summary>
-        /// A JSON-serialised representation of the data attached to the log message.
-        /// </summary>
-        public string Data { get; set; }
     }
 }
